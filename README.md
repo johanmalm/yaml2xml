@@ -2,6 +2,75 @@
 
     yaml2xml < rc.yaml
 
+## Introduction
+
+Convert YAML files to XML
+
+For example, `foo: bar` in YAML is converted to `<foo>bar</foo>` in XML.
+
+If rc.yaml includes a key-value pair where the value is an array, it is
+converted to a sequence of `<key>array-element</key>` in XML.
+
+For example, a YAML expression:
+
+```
+touch:
+  - deviceName: xxxx
+    mapToOutput: eDP-1
+  - deviceName: yyyy
+    mapToOutput: HDMI-1
+```
+
+is converted to an XML expression:
+
+```
+<touch>
+  <deviceName>xxxx</deviceName>
+  <mapToOutput>eDP-1</mapToOutput>
+</touch>
+<touch>
+  <deviceName>yyyy</deviceName>
+  <mapToOutput>eDP-1</mapToOutput>
+</touch>
+```
+
+To avoid unnecessary indentations, some nodes that wrap array elements in XML
+can be ommitted. This includes:
+
+	- `<windowSwitcher><fields><field>`
+    - `<regions><region>`
+    - `<windowRules><windowRule>`
+    - `<libinput><device>`
+    - `<desktops><names><name>`
+
+For example, window switcher can be configured like:
+
+```
+windowSwitcher:
+  fields:
+    - content: type
+      width: 15%
+    - content: title
+      width: 85%
+```
+
+In addition, some specific keys in singular form with a sequence value in YAML
+are converted to plural form in XML. This includes:
+
+	- `keybinds` (converted to `keybind`)
+    - `mousebinds` (converted to `mousebind`)
+	- `actions` (converted to `action`)
+	- `fonts` (converted to `font`)
+	- `contexts` (converted to `context`)
+
+For example, keybinds can be configured like:
+
+```
+keybinds:
+  - { key: W-s, action: { name: Execute, command: foot } }
+  - { key: W-a, action: { name: Execute, command: fuzzel } }
+```
+
 ## Example:
 
 rc.yaml:
@@ -204,3 +273,8 @@ rc.xml (formatted):
   </libinput>
 </labwc_config>
 ```
+
+
+
+
+

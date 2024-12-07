@@ -11,9 +11,16 @@ project(
 
 yaml = dependency('yaml-0.1')
 
+yaml2xml_inc = include_directories('.')
+subdir('t')
+
 executable(
   meson.project_name(),
-  sources: files('yaml2xml.c'),
+  sources: files(
+    'main.c',
+    'parse.c',
+    'buf.c',
+  ),
   dependencies: yaml,
   install: true,
 )
